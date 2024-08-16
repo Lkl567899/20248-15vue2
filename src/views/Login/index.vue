@@ -16,7 +16,7 @@
     </div>
     <div class="formitem">
       <input class="inp" maxlength="11" placeholder="请输入图形验证码" type="text">
-      <img src="" alt="">
+      <img :src="base64" alt="" @click="getCaptchaImageData()">
     </div>
     <div class="formitem">
       <input class="inp" maxlength="11" placeholder="请输入短信验证码" type="text">
@@ -29,8 +29,28 @@
 </template>
 
 <script>
+import { getCaptchaImageAPI } from '@/api/login'
+
 export default {
-  name: 'LoginIndex'
+  name: 'LoginIndex',
+  data () {
+    return {
+      base64: '',
+      key: ''
+    }
+  },
+  methods: {
+    // 获取图形验证码
+    async getCaptchaImageData () {
+      const res = await getCaptchaImageAPI()
+      this.base64 = res.data.base64
+      this.key = res.data.key
+    }
+  },
+  created () {
+    // 获取图形验证码
+    this.getCaptchaImageData()
+  }
 }
 </script>
 

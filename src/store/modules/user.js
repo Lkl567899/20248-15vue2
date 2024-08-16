@@ -1,20 +1,20 @@
-import { getUserInfo, setUserInfo } from "@/utils/storage"
+import { getUserInfo, setUserInfo } from '@/utils/storage'
 
 export default {
   namespaced: true,
-  state() {
+  state () {
     return {
       userInfo: getUserInfo()
     }
   },
   mutations: {
-    setInfo(state, obj) {
+    setInfo (state, obj) {
       state.userInfo = obj
       setUserInfo(obj)
     }
   },
   actions: {
-    logOut(context) {
+    logOut (context) {
       context.commit('setInfo', {})
     }
   }
