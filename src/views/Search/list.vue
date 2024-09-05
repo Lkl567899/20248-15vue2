@@ -1,15 +1,18 @@
 <template>
   <div>
-searchlist
+    {{ id }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ListIndex'
+  name: 'ListIndex',
+  computed: {
+    id () {
+      return this.$route.query.id
+    }
+  }
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

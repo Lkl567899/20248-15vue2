@@ -14,7 +14,7 @@
         </div>
         <div class="formitem">
           <input class="inp" maxlength="11" placeholder="请输入短信验证码" type="text" v-model="phoneCode">
-          <button @click="getPhoneCode()">{{seconds === ALLseconds ? '获取验证码' : seconds + '后发送'}}</button>
+          <button @click="getPhoneCode()">{{ seconds === ALLseconds ? '获取验证码' : seconds + '后发送' }}</button>
         </div>
       </div>
       <div class="login-btn" @click="onSubmit()">登录</div>

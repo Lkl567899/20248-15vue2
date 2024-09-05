@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <van-nav-bar title="首页" fixed />
-    <van-search shape="round" background="#e9e9e9" placeholder="请输入搜索关键词" />
+    <van-search shape="round" background="#f7f7f7" placeholder="请输入搜索关键词" readonly @click="$router.push('/search')" />
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="item in swiper" :key="item.imgName"><img :src="item.imgUrl" alt=""></van-swipe-item>
     </van-swipe>
@@ -12,7 +12,6 @@
       </div>
     </div>
     <!-- 主会场 -->
-    <div @click="$router.push(`/search/?id=${123456}&text=${`lkl`}`)">去</div>
     <div class="main">
       <img src="../../assets/阳菜.jpg" alt="" class="logo">
     </div>
