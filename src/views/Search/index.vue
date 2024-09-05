@@ -1,6 +1,7 @@
 <template>
   <div>
-search
+    search
+
   </div>
 </template>
 
@@ -10,6 +11,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
