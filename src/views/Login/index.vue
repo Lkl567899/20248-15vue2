@@ -18,7 +18,7 @@
 
         </div>
       </div>
-      <div class="login-btn" @click="onSubmit()">请你登录</div>
+      <div class="login-btn" @click="onSubmit()">请我bug登录</div>
     </div>
   </div>
 </template>
