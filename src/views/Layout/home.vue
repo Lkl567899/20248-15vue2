@@ -42,7 +42,7 @@ export default {
   methods: {
     async getPageDetailData () {
       const res = await getPageDetailAPI()
-      console.log(res.data.pageData.items[6].data)
+      console.log(res.data.pageData.items)
       this.swiper = res.data.pageData.items[1].data
       this.pageList = res.data.pageData.items[3].data
       this.goodsList = res.data.pageData.items[6].data
@@ -110,6 +110,7 @@ export default {
   .guess-title {
     height: 40px;
     line-height: 40px;
+    font-size: 14px;
     text-align: center;
   }
 }

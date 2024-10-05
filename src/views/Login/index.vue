@@ -15,16 +15,16 @@
         <div class="formitem">
           <input class="inp" maxlength="11" placeholder="请输入短信验证码" type="text" v-model="phoneCode">
           <button @click="getPhoneCode()">{{ seconds === ALLseconds ? '获取验证码' : seconds + '后发送' }}</button>
+
         </div>
       </div>
-      <div class="login-btn" @click="onSubmit()">登录</div>
+      <div class="login-btn" @click="onSubmit()">请你登录</div>
     </div>
   </div>
 </template>
 
 <script>
 import { getCaptchaImageAPI, postCaptchaSendSmsCaptchaAPI, postPassportLoginAPI } from '@/api/login'
-
 export default {
   name: 'LoginIndex',
   data () {
@@ -94,7 +94,7 @@ export default {
     }
   },
   created () {
-    // 获取图形验证码
+    // 获取图形验证
     this.getCaptchaImageData()
   }
 }
