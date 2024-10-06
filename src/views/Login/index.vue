@@ -18,7 +18,7 @@
 
         </div>
       </div>
-      <div class="login-btn" @click="onSubmit()">我是最新的</div>
+      <div class="login-btn" @click="onSubmit()">10.6.7:46</div>
     </div>
   </div>
 </template>
