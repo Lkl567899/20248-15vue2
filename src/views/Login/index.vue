@@ -18,7 +18,7 @@
 
         </div>
       </div>
-      <div class="login-btn" @click="onSubmit()">修改bug</div>
+      <div class="login-btn" @click="onSubmit()">修复修复修复</div>
     </div>
   </div>
 </template>

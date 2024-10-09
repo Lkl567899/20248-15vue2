@@ -16,7 +16,7 @@
       <img src="../../assets/阳菜.jpg" alt="" class="logo">
     </div>
     <div class="guess">
-      <p class="guess-title">—— 猜你nn喜欢 ——</p>
+      <p class="guess-title">——11111111111——</p>
       <div class="guess-list">
         <GoodsItem v-for="item in goodsList" :key="item.goods_id" :item="item"></GoodsItem>
       </div>
