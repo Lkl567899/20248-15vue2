@@ -16,7 +16,7 @@
       <img src="../../assets/阳菜.jpg" alt="" class="logo">
     </div>
     <div class="guess">
-      <p class="guess-title">——11111111111——</p>
+      <p class="guess-title">——猜你喜欢——</p>
       <div class="guess-list">
         <GoodsItem v-for="item in goodsList" :key="item.goods_id" :item="item"></GoodsItem>
       </div>
@@ -46,6 +46,9 @@ export default {
       this.swiper = res.data.pageData.items[1].data
       this.pageList = res.data.pageData.items[3].data
       this.goodsList = res.data.pageData.items[6].data
+    },
+    sayHello () {
+      console.log('sayHello')
     }
   },
   created () {
