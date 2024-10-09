@@ -17,6 +17,7 @@
     </div>
     <div class="guess">
       <p class="guess-title">——11111111111——</p>
+       <p class="guess-title">我是第二个程序员</p>
       <div class="guess-list">
         <GoodsItem v-for="item in goodsList" :key="item.goods_id" :item="item"></GoodsItem>
       </div>
