@@ -26,6 +26,7 @@
 <script>
 import { getCaptchaImageAPI, postCaptchaSendSmsCaptchaAPI, postPassportLoginAPI } from '@/api/login'
 export default {
+
   name: 'LoginIndex',
   data () {
     return {
@@ -39,12 +40,14 @@ export default {
       ALLseconds: 60
     }
   },
+
   methods: {
     // 获取图形验证码
     async getCaptchaImageData () {
       const res = await getCaptchaImageAPI()
-      this.base64 = res.data.base64
-      this.key = res.data.key
+      const { data } = res
+      this.base64 = data.base64
+      this.key = data.key
     },
     // 获取短信验证码
     async getPhoneCode () {
