@@ -28,7 +28,6 @@ request.interceptors.request.use(function (config) {
 // 添加响应拦截器
 request.interceptors.response.use(function (response) {
   const res = response.data
-  console.log(res)
   if (res.status !== 200) {
     // Toast(res.data)
     Toast.clear()
