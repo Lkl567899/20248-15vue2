@@ -11,7 +11,8 @@
       <div class="list-item" v-for="(item, index) in value" :key="index" @click="SearchItem(index)"
         :class="{ active: index === ChangeIndex }">{{ item }}</div>
     </div>
-    <GoodsItem v-for="item in item" :key="item.goods_id" :item="item"></GoodsItem>
+    <div v-if="item.length"><GoodsItem v-for="item in item" :key="item.goods_id" :item="item"></GoodsItem></div>
+    <van-empty description="亲~暂无相关数据"  v-else/>
   </div>
 </template>
 

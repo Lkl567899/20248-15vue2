@@ -37,7 +37,7 @@
       <div class="list">
         <div class="list-item" v-for="(item, index) in totalList" :key="index">
           <div class="top">
-            <img :src="item.user.avatar_url || defaultAvatar" alt="">
+            <img class="avatar" :src="item.user.avatar_url || defaultAvatar" alt="">
             <span>{{ item.user.nick_name }}</span>
             <van-rate :value="item.score / 2" :size="15" color="#ffd21e" void-icon="star" void-color="#eee" />
           </div>
@@ -74,7 +74,7 @@
       <numInput v-model="value"></numInput>
     </div>
     <div v-if="item.stock_total > 0">
-      <div class="addBtn" v-if="mode === 'cart'">加入购物车</div>
+      <div class="addBtn" v-if="mode === 'cart'" @click="Cart">加入购物车</div>
       <div class="addBtn now" v-if="mode === 'buyNow'">立刻购买</div>
     </div>
     <div class="addBtn none" v-else>该商品已抢完</div>
@@ -137,6 +137,27 @@ export default {
     buy (temp) {
       this.mode = temp
       this.show = true
+    },
+    // 加入购物测
+    Cart () {
+      const token = this.$store.getters.token
+      console.log(token)
+      if (!token) {
+        console.log('我没有')
+        this.$dialog.confirm({
+          title: '温馨提示',
+          message: '此时此刻需要您先登录喔~',
+          confirmButtonText: '去登录',
+          cancelButtonText: '再逛逛'
+        }).then(() => {
+          this.$router.replace({
+            path: '/login',
+            query: {
+              backUrl: this.$route.fullPath
+            }
+          })
+        }).catch(() => {})
+      }
     }
   }
 }
@@ -179,7 +200,7 @@ export default {
     }
     .none {
       color: rgb(255, 255, 255);
-      background-color: rgb(255, 148, 2);
+      background-color: rgb(178, 168, 153);
     }
     .now {
       background-color: #fe5630;
@@ -189,10 +210,9 @@ export default {
   ::v-deep .van-icon-arrow-left {
     color: #333;
   }
-
   img {
     display: block;
-    width: 100%;
+    width: 100% !important;
   }
 
   .custom-indicator {
@@ -213,6 +233,10 @@ export default {
       display: block;
       width: 100% !important;
     }
+    img {
+    display: block;
+    width: 100% !important;
+  }
   }
 
   .info {
@@ -300,8 +324,8 @@ export default {
         }
 
         img {
-          width: 28px;
-          height: 28px;
+          width: 28px !important;
+          height: 28px !important;
           border-radius: 50%;
         }
 
@@ -327,10 +351,12 @@ export default {
 .footer {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -1px;
   width: 100%;
   height: 55px;
   border: 1px solid #ccc;
+  border-left: none;
+  border-right: none;
   background-color: #fff;
     display: flex;
     justify-content: space-evenly;
