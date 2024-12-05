@@ -13,11 +13,10 @@
     </div>
     <!-- 主会场 -->
     <div class="main">
-      <img src="../../assets/阳菜.jpg" alt="" class="logo">
+      <img src="../../assets/my.jpg" alt="" class="logo">
     </div>
     <div class="guess">
       <p class="guess-title">——猜你喜欢——</p>
-       <p class="guess-title">我是第二个程序员</p>
       <div class="guess-list">
         <GoodsItem v-for="item in goodsList" :key="item.goods_id" :item="item"></GoodsItem>
       </div>
@@ -106,7 +105,7 @@ export default {
 
 .logo {
   width: 100%;
-  height: 150px;
+  height: 185px;
   display: block;
 }
 
