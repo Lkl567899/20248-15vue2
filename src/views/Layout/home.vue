@@ -6,7 +6,7 @@
       <van-swipe-item v-for="item in swiper" :key="item.imgName"><img :src="item.imgUrl" alt=""></van-swipe-item>
     </van-swipe>
     <div class="test">
-      <div class="testbox" v-for="item in pageList" :key="item.text">
+      <div class="testbox fs12" v-for="item in pageList" :key="item.text">
         <img :src="item.imgUrl" alt="">
         <p>{{ item.text }}</p>
       </div>
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .home {
   padding-top: 48px;
   padding-bottom: 50px;

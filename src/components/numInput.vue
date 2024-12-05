@@ -1,8 +1,8 @@
 <template>
   <div class="input">
-    <button class="clear" @click="clear" :class="this.value <= 1 ? 'def' : ''">-</button>
-    <input type="text" class="ipt" :value="value" @change="handChange">
-    <button class="add" @click="add">+</button>
+    <button class="clear fs12" @click="clear" :class="this.value <= 1 ? 'def' : ''">-</button>
+    <input type="text" class="ipt fs12" :value="value" @change="handChange">
+    <button class="add fs12" @click="add">+</button>
   </div>
 </template>
 

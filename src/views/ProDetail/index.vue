@@ -49,41 +49,44 @@
     <div class="tips">商品描述</div>
     <div class="desc" v-html="item.content"></div>
     <div class="footer">
-        <div class="home" @click="$router.push('/home')">
-          <van-icon name="wap-home-o" />
+      <div class="home" @click="$router.push('/home')">
+        <van-icon name="wap-home-o" />
         <span>首页</span>
-        </div>
-        <div class="cart">
-          <van-icon name="shopping-cart-o" />
-          <span>购物车</span>
-        </div>
-        <div class="add" @click="addCart('cart')">加入购物车</div>
-        <div class="buy" @click="buy('buyNow')">立即购买</div>
-    </div>
-    <van-action-sheet v-model="show" :title="mode === 'cart'? '加入购物车' : '立即购买'">
-  <div class="content">
-    <div class="title">
-      <div class="left"><img :src="item.goods_image" alt=""></div>
-      <div class="right">
-        <div class="price"><span>$</span>{{item.goods_price_min}}</div>
-        <div class="total"><span>库存:</span>{{item.stock_total}}</div>
       </div>
+      <div class="cart">
+        <van-icon name="shopping-cart-o" />
+        <span class="cartSpan" @click="$router.push('/cart')">购物车
+          <div class="cart-temp" v-if="this.cartTotal > 0">{{cartTotal}}</div>
+        </span>
+      </div>
+      <div class="add" @click="addCart('cart')">加入购物车</div>
+      <div class="buy" @click="buy('buyNow')">立即购买</div>
     </div>
-    <div class="main">
-      <div>数量</div>
-      <numInput v-model="value"></numInput>
-    </div>
-    <div v-if="item.stock_total > 0">
-      <div class="addBtn" v-if="mode === 'cart'" @click="Cart">加入购物车</div>
-      <div class="addBtn now" v-if="mode === 'buyNow'">立刻购买</div>
-    </div>
-    <div class="addBtn none" v-else>该商品已抢完</div>
-  </div>
-</van-action-sheet>
+    <van-action-sheet v-model="show" :title="mode === 'cart' ? '加入购物车' : '立即购买'">
+      <div class="content">
+        <div class="title">
+          <div class="left"><img :src="item.goods_image" alt=""></div>
+          <div class="right">
+            <div class="price"><span>$</span>{{ item.goods_price_min }}</div>
+            <div class="total"><span>库存:</span>{{ item.stock_total }}</div>
+          </div>
+        </div>
+        <div class="main">
+          <div>数量</div>
+          <numInput v-model="value"></numInput>
+        </div>
+        <div v-if="item.stock_total > 0">
+          <div class="addBtn" v-if="mode === 'cart'" @click="Cart">加入购物车</div>
+          <div class="addBtn now" v-if="mode === 'buyNow'">立刻购买</div>
+        </div>
+        <div class="addBtn none" v-else>该商品已抢完</div>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
+import { PostCartItemAPI, getCartTotalAPI } from '@/api/cart'
 import { getCommentListAPI, getProdetailItemAPI } from '@/api/prodetail'
 import defaultImg from '@/assets/阳菜.jpg'
 import numInput from '@/components/numInput.vue'
@@ -92,6 +95,7 @@ export default {
   created () {
     this.getProdetailItemData()
     this.getCommentListData()
+    this.getCartTotalData()
   },
   components: {
     numInput
@@ -106,7 +110,9 @@ export default {
       show: false,
       mode: '',
       value: 1,
-      defaultAvatar: defaultImg
+      sku_id: 0,
+      defaultAvatar: defaultImg,
+      cartTotal: 0
     }
   },
   computed: {
@@ -121,6 +127,7 @@ export default {
     async getProdetailItemData () {
       const res = await getProdetailItemAPI(this.id)
       this.item = res.data.detail
+      this.sku_id = res.data.detail.skuList[0].goods_sku_id
       this.length = res.data.detail.goods_images.length
       console.log(res.data.detail)
     },
@@ -128,7 +135,6 @@ export default {
       const res = await getCommentListAPI(-1, this.id, 1)
       this.total = res.data.list.total
       this.totalList = res.data.list.data
-      console.log(res.data.list.data, 1111)
     },
     addCart (temp) {
       this.mode = temp
@@ -138,8 +144,14 @@ export default {
       this.mode = temp
       this.show = true
     },
-    // 加入购物测
-    Cart () {
+    // 获取购物车商品数量
+    getCartTotalData () {
+      getCartTotalAPI().then((res) => {
+        this.cartTotal = res.data.cartTotal
+      }).catch((err) => { console.log(err) })
+    },
+    // 加入购物车
+    async Cart () {
       const token = this.$store.getters.token
       console.log(token)
       if (!token) {
@@ -156,39 +168,50 @@ export default {
               backUrl: this.$route.fullPath
             }
           })
-        }).catch(() => {})
+        }).catch(() => { })
       }
+      const res = await PostCartItemAPI(this.id, this.value, this.sku_id)
+      console.log(res)
+      this.show = false
+      // 获取购物车商品数量
+      this.getCartTotalData()
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .prodetail {
   .content {
     padding: 16px;
-    .title{
+
+    .title {
       display: flex;
-      .left{
-      img{
-        width: 90px;
-        height: 90px;
+
+      .left {
+        img {
+          width: 90px;
+          height: 90px;
+        }
+      }
+
+      .right {
+        margin-left: 10px;
+
+        .price {
+          color: #fe560a;
+          font-size: 24px;
+          margin-bottom: 5px;
+        }
       }
     }
-    .right {
-      margin-left: 10px;
-      .price{
-        color: #fe560a;
-        font-size: 24px;
-        margin-bottom: 5px;
-      }
-    }
-    }
+
     .main {
       display: flex;
       margin-top: 10px;
       justify-content: space-between;
     }
+
     .addBtn {
       padding: 10px;
       text-align: center;
@@ -198,18 +221,23 @@ export default {
       background-color: #ffa900;
       margin-top: 15px;
     }
+
     .none {
       color: rgb(255, 255, 255);
       background-color: rgb(178, 168, 153);
     }
+
     .now {
       background-color: #fe5630;
     }
   }
+
   margin-top: 44px;
+
   ::v-deep .van-icon-arrow-left {
     color: #333;
   }
+
   img {
     display: block;
     width: 100% !important;
@@ -229,14 +257,16 @@ export default {
     width: 100%;
     overflow: scroll;
     margin-bottom: 55px;
+
     ::v-deep img {
       display: block;
       width: 100% !important;
     }
+
     img {
-    display: block;
-    width: 100% !important;
-  }
+      display: block;
+      width: 100% !important;
+    }
   }
 
   .info {
@@ -358,31 +388,50 @@ export default {
   border-left: none;
   border-right: none;
   background-color: #fff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .home,
+  .cart {
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
     align-items: center;
-    .home, .cart {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      .van-icon {
-        font-size: 24px;
+    justify-content: center;
+    font-size: 14px;
+
+    .van-icon {
+      font-size: 24px;
+    }
+    .cartSpan {
+      position: relative;
+      .cart-temp{
+        position: absolute;
+        right: 0px;
+        top: -28px;
+        padding: 2px;
+        color: white;
+        font-size: 12px;
+        border-radius: 28px;
+        background-color: red;
       }
     }
-    .add, .buy {
-      height: 36px;
-      line-height: 36px;
-      width: 120px;
-      border-radius: 18px;
-      background-color: #ffa900;
-      text-align: center;
-      color: #fff;
-      font-size: 14px;
-    }
-    .buy{
-      background-color: #fe5630;
-    }
+  }
+
+  .add,
+  .buy {
+    height: 36px;
+    line-height: 36px;
+    width: 120px;
+    border-radius: 18px;
+    background-color: #ffa900;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .buy {
+    background-color: #fe5630;
+  }
 }
 </style>
