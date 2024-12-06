@@ -26,7 +26,7 @@
       <van-checkbox :value="allSelecked" class="checked fs12" @click="setAll">全选</van-checkbox>
       <div class="box">
         <div class="totalPrice fs12">合计: <span>￥{{ selPrice }}</span></div>
-        <div v-if="!isEdit" class="btn fs12">去结算({{ selCount }})</div>
+        <div v-if="!isEdit" class="btn fs12" @click="cartPay">去结算({{ selCount }})</div>
         <div v-else class="btn fs12" @click="delItem">删除</div>
       </div>
     </div>
@@ -79,11 +79,24 @@ export default {
     delItem () {
       if (this.selCount === 0) return false
       this.$store.dispatch('cart/delSelect')
+    },
+    // 购物车结算
+    cartPay () {
+      if (this.selCount <= 0) {
+        return false
+      }
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'cart',
+          cartIds: this.cartItem.map(item => item.id).join(' ')
+        }
+      })
     }
   },
   computed: {
     ...mapState('cart', ['cartList']),
-    ...mapGetters('cart', ['totalNum', 'selCount', 'selPrice', 'allSelecked'])
+    ...mapGetters('cart', ['totalNum', 'selCount', 'cartItem', 'selPrice', 'allSelecked'])
   },
   watch: {
     isEdit (value) {

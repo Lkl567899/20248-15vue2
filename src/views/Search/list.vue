@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getGoodsListAPI } from '@/api/search'
+import { getCategorysListAPI, getGoodsListAPI } from '@/api/search'
 import GoodsItem from '@/components/GoodsItem.vue'
 export default {
   name: 'ListIndex',
@@ -31,6 +31,9 @@ export default {
   computed: {
     id () {
       return this.$route.query.id
+    },
+    cateId () {
+      return this.$route.query.cateId
     }
   },
   components: {
@@ -48,10 +51,28 @@ export default {
         const res = await getGoodsListAPI(this.id, 'price')
         this.item = res.data.list.data
       }
+    },
+    // 分类id
+    async getCategorysListData (index) {
+      this.ChangeIndex = index
+      const res = await getCategorysListAPI(this.cateId)
+      this.item = res.data.list.data
+      if (this.ChangeIndex === 1) {
+        const res = await getCategorysListAPI(this.cateId, 'sales')
+        this.item = res.data.list.data
+      } else if (this.ChangeIndex === 2) {
+        const res = await getCategorysListAPI(this.cateId, 'price')
+        this.item = res.data.list.data
+      }
     }
   },
   created () {
-    this.SearchItem(0)
+    if (this.id) {
+      this.SearchItem(0)
+    }
+    if (this.cateId) {
+      this.getCategorysListData(0)
+    }
   }
 }
 </script>
