@@ -100,7 +100,7 @@ export default {
       // 提交
         await addAddressItemAPI(this.username, this.phone, this.region, this.allAddress)
       }
-      this.$router.push('/addressList')
+      this.$router.replace('/addressList')
     },
     async GetRegionTree () {
       const res = await GetRegionTreeAPI()

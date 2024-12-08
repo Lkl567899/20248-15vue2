@@ -187,7 +187,7 @@ export default {
 
     .title {
       display: flex;
-
+font-size: 14px;
       .left {
         img {
           width: 90px;
@@ -207,6 +207,7 @@ export default {
     }
 
     .main {
+      font-size: 14px;
       display: flex;
       margin-top: 10px;
       justify-content: space-between;

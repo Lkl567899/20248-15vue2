@@ -1,7 +1,7 @@
 <template>
   <div class="list">
-    <van-nav-bar title="收货地址" class="addressTitle" left-arrow @click-left="$router.go(-1)"></van-nav-bar>
-    <div class="addressList">
+    <van-nav-bar title="收货地址" class="addressTitle" left-arrow @click-left="$router.back(-1)"></van-nav-bar>
+    <div class="addressList" v-if="list.length">
       <div class="item" v-for="item in list" :key="item.address_id">
         <div class="name">{{item.name}} {{item.phone}}</div>
         <div class="address">{{item.region.province}} {{item.region.city}} {{item.region.region}} {{item.detail}}</div>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="btn" @click="$router.push('/addressItem')">添加新地址</div>
+      <div class="btn" @click="$router.go('/addressItem')">添加新地址</div>
     </div>
   </div>
 </template>
@@ -44,10 +44,12 @@ export default {
     async getAddressListData () {
       const res = await getAddressListAPI()
       this.list = res.data.list
-      const id = this.list.findIndex(item => item.address_id === this.defaultId)
-      const item = this.list.find(item => item.address_id === this.defaultId)
-      this.list.splice(id, 1)
-      this.list.unshift(item)
+      if (res) {
+        const id = this.list.findIndex(item => item.address_id === this.defaultId)
+        const item = this.list.find(item => item.address_id === this.defaultId)
+        this.list.splice(id, 1)
+        this.list.unshift(item)
+      }
     },
     // 获取默认id
     async getDefaultId () {
@@ -147,6 +149,7 @@ export default {
       width: 80%;
       text-align: center;
       border-radius: 30px;
+      font-size: 14px;
     }
   }
 }

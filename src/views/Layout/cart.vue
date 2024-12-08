@@ -89,7 +89,7 @@ export default {
         path: '/pay',
         query: {
           mode: 'cart',
-          cartIds: this.cartItem.map(item => item.id).join(' ')
+          cartIds: this.cartItem.map(item => item.id).join(',')
         }
       })
     }
