@@ -11,13 +11,13 @@
     <div class="info">
       <div class="title">
         <div class="price">
-          <span class="now">￥0.01</span>
-          <span class="oldprice">￥6699.00</span>
+          <span class="now">￥{{ item.goods_price_min }}</span>
+          <span class="oldprice">￥{{ item.goods_price_max }}</span>
         </div>
-        <div class="sellcount">已售1001件</div>
+        <div class="sellcount">已售{{ item.goods_sales }}件</div>
       </div>
       <div class="msg text-ellipsis-2">
-        三星手机 SAMSUNG Galaxy S23 8GB+256GB 超视觉夜拍系统 超清夜景 悠雾紫 5G手机 游戏拍照旗舰机s23
+        {{item.goods_name}}
       </div>
     </div>
     <div class="service">
