@@ -64,14 +64,14 @@
     </div>
     <div class="footer">
       <div class="text"><span>实付款:</span> <span class="red">${{order.orderTotalPrice}}</span></div>
-      <div class="btn">提交订单</div>
+      <div class="btn" @click="Submit">提交订单</div>
       {{  }}
     </div>
   </div>
 </template>
 
 <script>
-import { GetCheckoutOrderAPI } from '@/api/pay'
+import { GetCheckoutOrderAPI, PostCheckoutSubmitAPI } from '@/api/pay'
 import { Toast } from 'vant'
 export default {
   name: 'PayIndex',
@@ -89,6 +89,15 @@ export default {
   computed: {
     mode () {
       return this.$route.query.mode
+    },
+    goodsId () {
+      return this.$route.query.goodsId
+    },
+    goodsSkuId () {
+      return this.$route.query.goodsSkuId
+    },
+    goodsNum () {
+      return this.$route.query.goodsNum
     },
     cartIds () {
       return this.$route.query.cartIds
@@ -110,6 +119,17 @@ export default {
         console.log(res.data)
         // 省市区
         this.region = Object.values(this.address.region).join(' ')
+      } else {
+        // 立即购买
+        console.log('立即购买')
+        const res = await GetCheckoutOrderAPI(this.mode, { goodsId: this.goodsId, goodsSkuId: this.goodsSkuId, goodsNum: this.goodsNum })
+        this.address = res.data.order.address
+        this.money = res.data.personal.balance
+        this.goodsList = res.data.order.goodsList
+        this.order = res.data.order
+        console.log(res.data)
+        // 省市区
+        this.region = Object.values(this.address.region).join(' ')
       }
     },
     setAddress () {
@@ -122,6 +142,29 @@ export default {
         return false
       }
       this.messagenum = this.message.length
+    },
+    // 订单提交
+    async Submit () {
+      if (this.mode === 'cart') {
+        console.log(this.mode, this.cartIds)
+        const res = await PostCheckoutSubmitAPI(this.mode, {
+          remark: this.remark,
+          cartIds: this.cartIds
+        })
+        console.log(res)
+      }
+      if (this.mode === 'buyNow') {
+        console.log(this.mode, this.cartIds)
+        const res = await PostCheckoutSubmitAPI(this.mode, {
+          remark: this.remark,
+          goodsId: this.goodsId,
+          goodsSkuId: this.goodsSkuId,
+          goodsNum: this.goodsNum
+        })
+        console.log(res)
+      }
+      this.$toast.success('支付成功')
+      this.$router.replace('/myorder')
     }
   },
   created () {

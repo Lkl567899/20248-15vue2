@@ -77,7 +77,7 @@
         </div>
         <div v-if="item.stock_total > 0">
           <div class="addBtn" v-if="mode === 'cart'" @click="Cart">加入购物车</div>
-          <div class="addBtn now" v-if="mode === 'buyNow'">立刻购买</div>
+          <div class="addBtn now" v-if="mode === 'buyNow'" @click="buyNow">立刻购买</div>
         </div>
         <div class="addBtn none" v-else>该商品已抢完</div>
       </div>
@@ -90,8 +90,10 @@ import { PostCartItemAPI, getCartTotalAPI } from '@/api/cart'
 import { getCommentListAPI, getProdetailItemAPI } from '@/api/prodetail'
 import defaultImg from '@/assets/阳菜.jpg'
 import numInput from '@/components/numInput.vue'
+import loginConfirm from '@/mixins/loginConfirm'
 export default {
   name: 'ProdetailIndex',
+  mixins: [loginConfirm],
   created () {
     this.getProdetailItemData()
     this.getCommentListData()
@@ -152,29 +154,31 @@ export default {
     },
     // 加入购物车
     async Cart () {
-      const token = this.$store.getters.token
-      console.log(token)
-      if (!token) {
-        console.log('我没有')
-        this.$dialog.confirm({
-          title: '温馨提示',
-          message: '此时此刻需要您先登录喔~',
-          confirmButtonText: '去登录',
-          cancelButtonText: '再逛逛'
-        }).then(() => {
-          this.$router.replace({
-            path: '/login',
-            query: {
-              backUrl: this.$route.fullPath
-            }
-          })
-        }).catch(() => { })
+      // const token = this.$store.getters.token
+      // console.log(token)
+      if (this.loginConfirm()) {
+        return false
       }
       const res = await PostCartItemAPI(this.id, this.value, this.sku_id)
       console.log(res)
       this.show = false
       // 获取购物车商品数量
       this.getCartTotalData()
+    },
+    // 立即购买
+    async buyNow () {
+      if (this.loginConfirm()) {
+        return false
+      }
+      this.$router.replace({
+        path: '/pay',
+        query: {
+          mode: 'buyNow',
+          goodsId: this.id,
+          goodsSkuId: this.sku_id,
+          goodsNum: this.value
+        }
+      })
     }
   }
 }
