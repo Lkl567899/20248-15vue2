@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="btn" @click="$router.go('/addressItem')">添加新地址</div>
+      <div class="btn" @click="$router.push('/addressItem')">添加新地址</div>
     </div>
   </div>
 </template>
@@ -96,9 +96,9 @@ export default {
   }
 
   .addressList {
-    margin-top: 45px;
+    margin-top: 46px;
     padding: 10px 15px;
-
+    overflow-y: auto;
     .item {
       font-size: 15px;
       padding: 10px 15px;

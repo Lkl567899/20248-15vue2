@@ -59,12 +59,12 @@
     <div class="fuwu">
       <div class="title">我的服务</div>
       <div class="box">
-        <div class="item">
-          <van-icon name="location-o" class="icon" @click="address('/addressList')" />
+        <div class="item"  @click="address('/addressList')" >
+          <van-icon name="location-o" class="icon" />
           <div class="text">收货地址</div>
         </div>
-        <div class="item">
-          <van-icon name="point-gift-o" class="icon" />
+        <div class="item" @click="$router.push('/coupon')">
+          <van-icon name="point-gift-o" class="icon"/>
           <div class="text">领券中心</div>
         </div>
         <div class="item">

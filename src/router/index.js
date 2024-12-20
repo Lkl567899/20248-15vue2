@@ -38,11 +38,19 @@ const routes = [
   },
   {
     path: '/myorder',
-    component: () => import('@/views/MyOrder')
+    component: () => import('@/views/MyOrder/index')
+  },
+  {
+    path: '/coupon',
+    component: () => import('@/views/MyOrder/coupon')
   },
   {
     path: '/prodetail/:id',
-    component: () => import('@/views/ProDetail')
+    component: () => import('@/views/ProDetail/index')
+  },
+  {
+    path: '/prodetailList',
+    component: () => import('@/views/ProDetail/list')
   },
   {
     path: '/search',

@@ -32,18 +32,10 @@
     <div class="goods-comment">
       <div class="title">
         <div class="left">商品评价({{ total }}条)</div>
-        <div class="right">查看更多<van-icon name="arrow" /></div>
+        <div class="right" @click="$router.push(`/prodetailList?id=${id}`)">查看更多<van-icon name="arrow" /></div>
       </div>
       <div class="list">
-        <div class="list-item" v-for="(item, index) in totalList" :key="index">
-          <div class="top">
-            <img class="avatar" :src="item.user.avatar_url || defaultAvatar" alt="">
-            <span>{{ item.user.nick_name }}</span>
-            <van-rate :value="item.score / 2" :size="15" color="#ffd21e" void-icon="star" void-color="#eee" />
-          </div>
-          <div class="text text-ellipsis-2">{{ item.content }}</div>
-          <div class="time">{{ item.create_time }}</div>
-        </div>
+        <review :item="item" v-for="(item, index) in totalList" :key="index"></review>
       </div>
     </div>
     <div class="tips">商品描述</div>
@@ -88,8 +80,8 @@
 <script>
 import { PostCartItemAPI, getCartTotalAPI } from '@/api/cart'
 import { getCommentListAPI, getProdetailItemAPI } from '@/api/prodetail'
-import defaultImg from '@/assets/阳菜.jpg'
 import numInput from '@/components/numInput.vue'
+import review from '@/components/review.vue'
 import loginConfirm from '@/mixins/loginConfirm'
 export default {
   name: 'ProdetailIndex',
@@ -100,7 +92,8 @@ export default {
     this.getCartTotalData()
   },
   components: {
-    numInput
+    numInput,
+    review
   },
   data () {
     return {
@@ -113,7 +106,6 @@ export default {
       mode: '',
       value: 1,
       sku_id: 0,
-      defaultAvatar: defaultImg,
       cartTotal: 0
     }
   },
@@ -133,10 +125,11 @@ export default {
       this.length = res.data.detail.goods_images.length
       console.log(res.data.detail)
     },
+    // 获取评论
     async getCommentListData () {
       const res = await getCommentListAPI(-1, this.id, 1)
       this.total = res.data.list.total
-      this.totalList = res.data.list.data
+      this.totalList = res.data.list.data.slice(0, 5)
     },
     addCart (temp) {
       this.mode = temp
@@ -188,7 +181,6 @@ export default {
 .prodetail {
   .content {
     padding: 16px;
-
     .title {
       display: flex;
 font-size: 14px;
@@ -346,37 +338,37 @@ font-size: 14px;
     }
   }
 
-  .list {
-    .list-item {
-      padding: 5px 0;
+  // .list {
+  //   .list-item {
+  //     padding: 10px 0;
 
-      .top {
-        display: flex;
-        align-items: center;
+  //     .top {
+  //       display: flex;
+  //       align-items: center;
 
-        span {
-          margin: 0 5px;
-        }
+  //       span {
+  //         margin: 0 5px;
+  //       }
 
-        img {
-          width: 28px !important;
-          height: 28px !important;
-          border-radius: 50%;
-        }
+  //       img {
+  //         width: 28px !important;
+  //         height: 28px !important;
+  //         border-radius: 50%;
+  //       }
 
-      }
+  //     }
 
-      .text {
-        font-size: 13px;
-        margin: 5px 0;
-      }
+  //     .text {
+  //       font-size: 13px;
+  //       margin: 5px 0;
+  //     }
 
-      .time {
-        font-size: 13px;
-        color: #999;
-      }
-    }
-  }
+  //     .time {
+  //       font-size: 13px;
+  //       color: #999;
+  //     }
+  //   }
+  // }
 }
 
 .tips {

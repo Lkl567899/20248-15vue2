@@ -7,7 +7,6 @@ export const getProdetailItemAPI = (goodsId) => {
     }
   })
 }
-
 // 获取评论
 export const getCommentListAPI = (scoreType, goodsId, page) => {
   return request.get('/comment/list', {
